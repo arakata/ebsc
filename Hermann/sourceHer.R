@@ -1,4 +1,6 @@
 library(funtimes)
+library(wavethresh)
+
 ###############
 #HERR estimator
 ##############

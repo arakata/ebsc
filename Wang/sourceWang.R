@@ -2,7 +2,7 @@ library(forecast)
 library(nlme)
 library(SemiPar)
 library(splines)
-
+library(wavethresh)
 
 bspline <- function(x, xl, xr, ndx, bdeg){
     dx<-(xr-xl)/ndx

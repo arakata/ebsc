@@ -1,11 +1,15 @@
 library(funtimes)
+library(wavethresh)
+library(nlme)
+library(funtimes)
+
 ###############
 #HVK estimator
 ##############
 #based on:
 #Hall and Van Keilegom 2003. 
 
-HVK<-function(xvec,m1,m2,Y){
+Hall<-function(xvec,m1,m2,Y){
   
   # only consider AR 1 errors (can be extended)
   # xvec is [0,1] equidistant
