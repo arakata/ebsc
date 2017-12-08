@@ -119,15 +119,15 @@ R.eigenvalues<-Re(eigen(R)$values)
   
 CV<-rep(NA,length(h.set))  
 for(i in 1:length(h.set)){
-  fit<-ghatloo(xvec=xvec,h=h.set[i],Y=y)
-  error<-y-fit
+  fit<-ghatloo(xvec=xvec,h=h.set[i],Y=Y)
+  error<-Y-fit
   difference<-c(na.omit(error-phi.hat*c(NA,error[-n])))  
   CV[i]<-sum((difference)^2)/length(difference)
 }
 
 h.hat<-h.set[which.min(CV)]
-f.hat <- ghat(xvec=xvec,h=h.hat,Y=y)
-sigma2.hat<-Hall.gamma0(m2=m2,m1=m1,Y=y)
+f.hat <- ghat(xvec=xvec,h=h.hat,Y=Y)
+sigma2.hat<-Hall.gamma0(m2=m2,m1=m1,Y=Y)
   
 #list(h.hat=h.hat, R.eigenvalues=R.eigenvalues,f.hat=f.hat,sigma2.hat=sigma2.hat)
 list(Rhat=R,yhat=f.hat)
