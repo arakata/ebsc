@@ -1,4 +1,4 @@
-source("sourceNason.R")
+source("sourcelmm2.R")
 
 #simulate data
 x=seq(0,1,length.out=256)
@@ -8,10 +8,9 @@ mu=(exp(1)^(10*x-5))/(1+exp(1)^(10*x-5))
 noise=arima.sim(n=length(x),list(ar=c(0.5)),sd=0.1)
 y=mu+noise
 
-#Nason's Book
-yhat<-nason(y)$yhat
-that<-nason(y)$t
+#lmm2
+yhat<-lmm2(y,c(1,0))$yhat
 plot(x,y)
-lines(that,yhat,col=4,lwd=2)
+lines(x,yhat,col=4,lwd=2)
 
 
