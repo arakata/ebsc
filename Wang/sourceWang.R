@@ -42,7 +42,7 @@ search.opt<-function(B,y,p){
     D <- diag(ncol(B))
     for (k in 1:pord) D <- diff(D)
 
-    log10lambdas=seq(-10,-0.1,length.out=1000)
+    log10lambdas=seq(-6,-1,length.out=1000)
     m=length(log10lambdas)
     AICs=rep(NA,m)
 
@@ -52,8 +52,8 @@ search.opt<-function(B,y,p){
             S <- B%*%solve(t(B) %*% B + 10^log10lambda * t(D) %*% D)%*%t(B)
             edf.c<- sum(diag(S))            
             coefs <- solve(t(B) %*% B + 10^log10lambda * t(D) %*% D,t(B) %*% y)       
-            sigma2.c<-sd(y-B%*%coefs)^2
-            AICs[count]<-n*log(sigma2.c)+2*(p+edf.c)
+            RSS.c<-sum((y-B%*%coefs)^2)
+            AICs[count]<-n*log(RSS.c)+2*(p+edf.c)
         }
     
     lambda.star=10^log10lambdas[which.min(AICs)]
@@ -69,6 +69,7 @@ stable.opt<-function(B,y,p){
     yhat<-spline.mu(B=B,y=y,lambda=search.opt(B=B,y=y,p=0)$lambda.star)$yhat
     error<-y-yhat
 
+    #for some p finds the stable R (and corresponding lambda) 
     for(i in 2:5){
         R.storage[i,,]<-Sigma.eps(eps=error,p=p,q=0)$R
         L<-t(chol(R.storage[i,,]))
@@ -100,12 +101,11 @@ CochraneOrcut<-function(num.knots,bdeg,y){
 
     yhat<-spline.mu(B=B,y=y,lambda=search.opt(B=B,y=y,p=0)$lambda.star)$yhat
     error<-y-yhat
-    print("ok")
 
     #try correlation models
     AICs<-rep(NA,4)
     lambdas<-rep(NA,4)
-    for(p in 1:4){
+    for(p in 1:2){
         out<-stable.opt(B=B,y=y,p=p)
         param<-search.opt(B=out$Btilde,y=out$ytilde,p=p)
         AICs[p]<-param$AIC.star
